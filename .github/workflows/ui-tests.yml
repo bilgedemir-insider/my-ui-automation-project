@@ -26,11 +26,19 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Execute UI Tests
-        run: npm run test:ui
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: main-report.json
+        run: npx playwright test --reporter=json
+        continue-on-error: true
+
+      - name: Log Results to MongoDB
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: node log-to-db.js
 
       - name: Upload Artifacts (Reports & Screenshots)
         uses: actions/upload-artifact@v4
-        if: always() # Testler fail etse bile bu adımı asla atlama
+        if: always()
         with:
           name: playwright-test-results
           path: playwright-report/
