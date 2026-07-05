@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "test:ui": "playwright test"},
+  "test:ui": "playwright test --reporter=json"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.61.1",
     "@types/node": "^26.1.0"
+  },
+  "dependencies": {
+    "mongodb": "^7.4.0"
   }
 }
