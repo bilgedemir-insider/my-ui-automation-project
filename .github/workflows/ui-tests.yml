@@ -25,18 +25,15 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - # UI Testlerini çalıştır ve çıktıyı bir JSON dosyasına yaz
       - name: Execute UI Tests
-        run: npm run test:ui > main-report.json
-        continue-on-error: true # Test fail etse bile raporu DB'ye yazabilmesi için devam etmesini sağlıyoruz
+        run: npm run test:ui -- --reporter=json > main-report.json
+        continue-on-error: true
 
-      # Test sonuçlarını MongoDB'ye kaydet
       - name: Log Results to MongoDB
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: node log-to-db.js
 
-      # Raporları yükle (Eski adımınız kalabilir)
       - name: Upload Artifacts (Reports & Screenshots)
         uses: actions/upload-artifact@v4
         if: always()
